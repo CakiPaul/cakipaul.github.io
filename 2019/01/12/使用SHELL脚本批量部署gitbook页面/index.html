@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+  
+  
+  <link rel="stylesheet" href="/lib/needsharebutton/needsharebutton.css">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=6.7.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.7.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.7.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '6.7.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="1 思路1.1 概述在使用Coding平台的Pages服务发布gitbook时，我们可以在master分支上部署源代码，coding-pages分支上部署静态页面。将项目命名为有规律的单词拼写，就可以使用一个脚本对不同的仓库进行初始化/更新文件/更新页面操作了。 1.2 使用脚本初始化仓库在初始化仓库时需要设置book.json、SUMMARY.md文件，前者包含所需要的插件与站点信息，后者则包含">
+<meta name="keywords" content="gitbook,shell">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用SHELL脚本批量部署gitbook页面">
+<meta property="og:url" content="https://blog.cakipaul.com/2019/01/12/使用SHELL脚本批量部署gitbook页面/index.html">
+<meta property="og:site_name" content="Work4Truth">
+<meta property="og:description" content="1 思路1.1 概述在使用Coding平台的Pages服务发布gitbook时，我们可以在master分支上部署源代码，coding-pages分支上部署静态页面。将项目命名为有规律的单词拼写，就可以使用一个脚本对不同的仓库进行初始化/更新文件/更新页面操作了。 1.2 使用脚本初始化仓库在初始化仓库时需要设置book.json、SUMMARY.md文件，前者包含所需要的插件与站点信息，后者则包含">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-01-13T12:08:34.120Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用SHELL脚本批量部署gitbook页面">
+<meta name="twitter:description" content="1 思路1.1 概述在使用Coding平台的Pages服务发布gitbook时，我们可以在master分支上部署源代码，coding-pages分支上部署静态页面。将项目命名为有规律的单词拼写，就可以使用一个脚本对不同的仓库进行初始化/更新文件/更新页面操作了。 1.2 使用脚本初始化仓库在初始化仓库时需要设置book.json、SUMMARY.md文件，前者包含所需要的插件与站点信息，后者则包含">
+
+
+
+
+
+
+  <link rel="canonical" href="https://blog.cakipaul.com/2019/01/12/使用SHELL脚本批量部署gitbook页面/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>使用SHELL脚本批量部署gitbook页面 | Work4Truth</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Work4Truth</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">And the truth will set you free.</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>Tags</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>Categories</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://blog.cakipaul.com/2019/01/12/使用SHELL脚本批量部署gitbook页面/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="cakipaul">
+      <meta itemprop="description" content="Articles about CS">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Work4Truth">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">使用SHELL脚本批量部署gitbook页面<a href="https://github.com/cakipaul/hexoblog/tree/master/source/_posts/使用SHELL脚本批量部署gitbook页面.md" class="post-edit-link" title="Edit this post" rel="noopener" target="_blank"><i class="fa fa-pencil"></i></a>
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-01-12 16:17:00" itemprop="dateCreated datePublished" datetime="2019-01-12T16:17:00+08:00">2019-01-12</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-01-13 20:08:34" itemprop="dateModified" datetime="2019-01-13T20:08:34+08:00">2019-01-13</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/web/" itemprop="url" rel="index"><span itemprop="name">web</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="1-思路"><a href="#1-思路" class="headerlink" title="1 思路"></a>1 思路</h1><h2 id="1-1-概述"><a href="#1-1-概述" class="headerlink" title="1.1 概述"></a>1.1 概述</h2><p>在使用Coding平台的Pages服务发布gitbook时，我们可以在master分支上部署源代码，coding-pages分支上部署静态页面。将项目命名为有规律的单词拼写，就可以使用一个脚本对不同的仓库进行初始化/更新文件/更新页面操作了。</p>
+<h2 id="1-2-使用脚本初始化仓库"><a href="#1-2-使用脚本初始化仓库" class="headerlink" title="1.2 使用脚本初始化仓库"></a>1.2 使用脚本初始化仓库</h2><p>在初始化仓库时需要设置book.json、SUMMARY.md文件，前者包含所需要的插件与站点信息，后者则包含目录信息。初始化（即gitbook init &amp; gitbook install）后会生成插件文件夹node_modules，其中包含book.json中所涉及的插件。</p>
+<pre class="mermaid">sequenceDiagram
+participant l as local
+participant r as remote
+    l-->>l:获取init所需要的必要信息
+    note right of l:local git init
+    r->>l:master:pull
+    note right of l:gitbook build
+    l-->>l:coding-pages
+    note right of l:将_book文件夹置为根目录
+    l->>r:coding-pages:push-f
+    l->>r:master:push(含book.json、SUMMARY.md)</pre>
+
+
+
+<h2 id="1-3-使用脚本更新新文件"><a href="#1-3-使用脚本更新新文件" class="headerlink" title="1.3 使用脚本更新新文件"></a>1.3 使用脚本更新新文件</h2><p>在涉及文件改动，即SUMMARY.md文件有改动时,local需要先清理本地文件再pull拉取远程仓库的master中的源文件，流程如下：</p>
+<pre class="mermaid">sequenceDiagram;
+participant l as local;
+participant r as remote;
+    l-->>l:init
+    note right of l:local git init
+    r->>l:master:pull
+    note right of l:gitbook build
+    l-->>l:coding-pages
+    note right of l:将_book文件夹置为根目录
+    l->>r:coding-pages:push-f
+    l->>r:master:push(由SUMMARY.md生成的新目录)</pre>
+
+<h2 id="1-4-使用脚本更新页面"><a href="#1-4-使用脚本更新页面" class="headerlink" title="1.4 使用脚本更新页面"></a>1.4 使用脚本更新页面</h2><p>更新页面操作不会影响remote仓库中的master分支，只会拉取源文件并生成静态页面，再push到coding-pages分支上。流程如下：</p>
+<pre class="mermaid">sequenceDiagram;
+participant l as local;
+participant r as remote;
+    r->>l:master:pull;
+    note right of l:gitbook build;
+    l-->>l:coding-pages;
+    note right of l:将_book文件夹置为根目录;
+    l->>r:coding-pages:push-f;</pre>
+
+
+<h1 id="2-实现"><a href="#2-实现" class="headerlink" title="2 实现"></a>2 实现</h1><h2 id="2-1-文件组织"><a href="#2-1-文件组织" class="headerlink" title="2.1 文件组织"></a>2.1 文件组织</h2><p>以/home中实现gitbook部署环境为例：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">/home/deploy.sh</span><br><span class="line">     /node_modules/...</span><br><span class="line">     /gb/db/SUMMARY.md</span><br><span class="line">           /README.md</span><br><span class="line">           /book.json</span><br><span class="line">           /floders...</span><br><span class="line">        /ds/SUMMARY.md</span><br><span class="line">           /README.md</span><br><span class="line">           /book.json</span><br><span class="line">           /floders...</span><br><span class="line">        /...</span><br></pre></td></tr></table></figure></p>
+<p>其中：</p>
+<ul>
+<li>deploy.sh ：即脚本文件；</li>
+<li>node_modules/ ：是为了重复利用<code>gitbook install</code>的插件而生成的插件目录；</li>
+<li>gb/ ：即新生成的gitbook数据所在的根目录；</li>
+<li>db/ ds/ …/ ：电子书目录，db为database的缩写，ds为data structure的缩写。<br>在/home/目录中编辑deploy.sh文件，就可以通过 <code>sh deploy.sh</code> 命令来生成这个目录树了。</li>
+</ul>
+<h2 id="2-2-流程"><a href="#2-2-流程" class="headerlink" title="2.2 流程"></a>2.2 流程</h2><p>通过vim命令自定义编辑deploy.sh文件后，运行<code>sh deploy.sh</code>进入部署流程：</p>
+<pre class="mermaid">graph TD;
+A(仓库确认:输入仓库名称)-->B(在./gb/目录下生成同名文件夹);
+B-->C{Quick deploy?};
+C-->|y|D(从远程仓库的master分支pull文件<br>生成静态页面后推送到coding-pages分支);
+D-->H(End);
+C-->|n|E{init?};
+E-->|n|G(重置git仓库,更新页面);
+G-->H;
+E-->|y|F(配置book.json与SUMMARY文件);
+F-->I(初始化git仓库,更新页面);
+I-->H;</pre>
+
+<p><em>注意：y/n皆为小写</em></p>
+<p>init流程耗时较多，一般只需要在初次部署时运行，之后若有文件组织的改动，则两i选择都选 ‘n’ 。在涉及文件内容的编辑时，在Quick deploy时键入y即可。</p>
+<h2 id="2-3-deploy-sh文件代码"><a href="#2-3-deploy-sh文件代码" class="headerlink" title="2.3 deploy.sh文件代码"></a>2.3 deploy.sh文件代码</h2><p>库初始化时添加 gitignore、book.json与SUMMARY.md文件。</p>
+<p>其中.gitignore内容为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">node_modules</span><br><span class="line">deploy.sh</span><br><span class="line">_book</span><br></pre></td></tr></table></figure></p>
+<p>在建立gitbook仓库的根目录中vim编辑deploy.sh文件，为deploy.sh脚本授权：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod +x ./deploy.sh</span><br></pre></td></tr></table></figure></p>
+<p>之后运行即可。</p>
+<p>deploy脚本代码如下：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!bin/sh</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#需要修改为自己的coding账户相对应的url格式</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"type the repo's name (using git@git.dev.tencent.com:paulsun/)"</span></span><br><span class="line"><span class="built_in">read</span> book</span><br><span class="line">coding=<span class="string">"git@git.dev.tencent.com:paulsun/<span class="variable">$book</span>"</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"Quick(not the first) deploy?(y/n)?"</span></span><br><span class="line"><span class="built_in">read</span> quick</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [[ <span class="variable">$quick</span> == <span class="string">'n'</span> ]]</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">    mkdir ./gb</span><br><span class="line">    mkdir ./gb/<span class="variable">$book</span></span><br><span class="line">    find ./gb/<span class="variable">$book</span>/ |grep -v ./gb/<span class="variable">$book</span>/deploy.sh|grep -v ./gb/<span class="variable">$book</span>/node_modules|grep -v ./gb/<span class="variable">$book</span>/|xargs rm -rf</span><br><span class="line">    rm -rf ./gb/<span class="variable">$book</span>/.git</span><br><span class="line"></span><br><span class="line">    <span class="comment">#init node_moules&amp;book.json&amp;SUMMARY</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">"Do you want to start init progress?(y/n)"</span></span><br><span class="line">    <span class="built_in">read</span> init</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    init=<span class="string">"n"</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#init-deploy</span></span><br><span class="line"><span class="keyword">if</span> [[ <span class="variable">$init</span> == <span class="string">"y"</span> ]]</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#此处为book.json代码，包含gitbook 3.2.3版本推荐插件。注意修改为个人信息</span></span><br><span class="line"></span><br><span class="line">    author=<span class="string">"cakipaul"</span></span><br><span class="line">    links=<span class="string">"http://cs-book.cakipaul.com"</span></span><br><span class="line">    flag=<span class="string">"false"</span> <span class="comment">#show-level</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">"title="</span></span><br><span class="line">    <span class="built_in">read</span> title</span><br><span class="line">    <span class="built_in">echo</span> <span class="string">"description="</span></span><br><span class="line">    <span class="built_in">read</span> description</span><br><span class="line">    <span class="built_in">echo</span>  <span class="string">"&#123;</span></span><br><span class="line"><span class="string">        \"title\": \"<span class="variable">$title</span>\",</span></span><br><span class="line"><span class="string">        \"author\": \"<span class="variable">$author</span>\",</span></span><br><span class="line"><span class="string">        \"description\": \"<span class="variable">$description</span>\",</span></span><br><span class="line"><span class="string">        \"output.name\": \"site\",</span></span><br><span class="line"><span class="string">        \"language\": \"zh-hans\",</span></span><br><span class="line"><span class="string">        \"gitbook\": \"3.2.3\",</span></span><br><span class="line"><span class="string">        \"links\": &#123;</span></span><br><span class="line"><span class="string">            \"sidebar\": &#123;</span></span><br><span class="line"><span class="string">                \"Home\": \"<span class="variable">$links</span>\"</span></span><br><span class="line"><span class="string">            &#125;</span></span><br><span class="line"><span class="string">        &#125;,</span></span><br><span class="line"><span class="string">        \"plugins\": [</span></span><br><span class="line"><span class="string">            \"anchors\",</span></span><br><span class="line"><span class="string">            \"ace@^0.3.2\",</span></span><br><span class="line"><span class="string">            \"anchor-navigation-ex@0.1.8\",</span></span><br><span class="line"><span class="string">            \"-sharing\",</span></span><br><span class="line"><span class="string">            \"sharing-plus\",</span></span><br><span class="line"><span class="string">            \"mermaid-gb3\",</span></span><br><span class="line"><span class="string">            \"katex\",</span></span><br><span class="line"><span class="string">            \"-lunr\",</span></span><br><span class="line"><span class="string">            \"-search\",</span></span><br><span class="line"><span class="string">            \"search-plus\",</span></span><br><span class="line"><span class="string">            \"-highlight\",</span></span><br><span class="line"><span class="string">            \"page-footer-ex\",</span></span><br><span class="line"><span class="string">            \"prism\",</span></span><br><span class="line"><span class="string">            \"prism-themes\",</span></span><br><span class="line"><span class="string">            \"splitter\",</span></span><br><span class="line"><span class="string">            \"page-footer-ex\"</span></span><br><span class="line"><span class="string">        ],</span></span><br><span class="line"><span class="string">    \"pluginsConfig\": &#123;</span></span><br><span class="line"><span class="string">            \"theme-default\": &#123;</span></span><br><span class="line"><span class="string">                \"showLevel\": <span class="variable">$flag</span></span></span><br><span class="line"><span class="string">            &#125;,</span></span><br><span class="line"><span class="string">            \"sharing\": &#123;</span></span><br><span class="line"><span class="string">                \"douban\": false,</span></span><br><span class="line"><span class="string">                \"facebook\": false,</span></span><br><span class="line"><span class="string">                \"google\": false,</span></span><br><span class="line"><span class="string">                \"hatenaBookmark\": false,</span></span><br><span class="line"><span class="string">                \"instapaper\": false,</span></span><br><span class="line"><span class="string">                \"line\": false,</span></span><br><span class="line"><span class="string">                \"linkedin\": false,</span></span><br><span class="line"><span class="string">                \"messenger\": false,</span></span><br><span class="line"><span class="string">                \"pocket\": false,</span></span><br><span class="line"><span class="string">                \"qq\": true,</span></span><br><span class="line"><span class="string">                \"qzone\": true,</span></span><br><span class="line"><span class="string">                \"stumbleupon\": false,</span></span><br><span class="line"><span class="string">                \"twitter\": false,</span></span><br><span class="line"><span class="string">                \"viber\": false,</span></span><br><span class="line"><span class="string">                \"vk\": false,</span></span><br><span class="line"><span class="string">                \"weibo\": true,</span></span><br><span class="line"><span class="string">                \"whatsapp\": false,</span></span><br><span class="line"><span class="string">                \"all\": [</span></span><br><span class="line"><span class="string">                    \"facebook\",</span></span><br><span class="line"><span class="string">                    \"google\",</span></span><br><span class="line"><span class="string">                    \"twitter\",</span></span><br><span class="line"><span class="string">                    \"linkedin\",</span></span><br><span class="line"><span class="string">                    \"douban\"</span></span><br><span class="line"><span class="string">                ]</span></span><br><span class="line"><span class="string">            &#125;,</span></span><br><span class="line"><span class="string">            \"prism\": &#123;</span></span><br><span class="line"><span class="string">                \"css\": [</span></span><br><span class="line"><span class="string">                \"prism-themes/themes/prism-base16-ateliersulphurpool.light.css\"</span></span><br><span class="line"><span class="string">                ]</span></span><br><span class="line"><span class="string">            &#125;,</span></span><br><span class="line"><span class="string">            \"anchor-navigation-ex\": &#123;</span></span><br><span class="line"><span class="string">                \"isRewritePageTitle\": true,</span></span><br><span class="line"><span class="string">                \"isShowTocTitleIcon\": true,</span></span><br><span class="line"><span class="string">                \"tocLevel1Icon\": \"fa fa-hand-o-right\",</span></span><br><span class="line"><span class="string">                \"tocLevel2Icon\": \"fa fa-hand-o-right\",</span></span><br><span class="line"><span class="string">                \"tocLevel3Icon\": \"fa fa-hand-o-right\"</span></span><br><span class="line"><span class="string">            &#125;,</span></span><br><span class="line"><span class="string">            \"page-footer-ex\": &#123;</span></span><br><span class="line"><span class="string">                \"copyright\": \"By [<span class="variable">$author</span>](<span class="variable">$links</span>)，使用[知识共享 署名-相同方式共享 4.0协议](https://creativecommons.org/licenses/by-sa/4.0/)发布\",</span></span><br><span class="line"><span class="string">                \"markdown\": true,</span></span><br><span class="line"><span class="string">                \"update_label\": \"此页面修订于：\",</span></span><br><span class="line"><span class="string">                \"update_format\": \"YYYY-MM-DD HH:mm:ss\"</span></span><br><span class="line"><span class="string">            &#125;</span></span><br><span class="line"><span class="string">        &#125;</span></span><br><span class="line"><span class="string">    &#125;"</span> &gt;./gb/<span class="variable">$book</span>/book.json</span><br><span class="line">    gitbook install</span><br><span class="line">    cp  -r ./node_modules ./gb/<span class="variable">$book</span>/</span><br><span class="line"></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">"# Summary</span></span><br><span class="line"><span class="string">* [本书首页](README.md)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">### 参考资源</span></span><br><span class="line"><span class="string">* [分类链接](参考资源/分类链接.md)"</span> &gt;./gb/<span class="variable">$book</span>/SUMMARY.md</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> ./gb/<span class="variable">$book</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#noquick-deploy</span></span><br><span class="line"><span class="keyword">if</span> [[ <span class="variable">$quick</span> == <span class="string">"n"</span> ]]</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">    git init</span><br><span class="line">    <span class="built_in">echo</span> <span class="string">"node_modules</span></span><br><span class="line"><span class="string">deploy.sh</span></span><br><span class="line"><span class="string">_book"</span>&gt;.gitignore</span><br><span class="line">    git add .</span><br><span class="line">    git commit -m <span class="string">'_book'</span></span><br><span class="line">    git remote rm coding</span><br><span class="line">    git remote add coding <span class="variable">$coding</span></span><br><span class="line"></span><br><span class="line">    git checkout master</span><br><span class="line">    git pull coding  master</span><br><span class="line"></span><br><span class="line">    gitbook init</span><br><span class="line">    gitbook install</span><br><span class="line">    gitbook build</span><br><span class="line">    git add .</span><br><span class="line">    git commit -m <span class="string">"create files"</span></span><br><span class="line"></span><br><span class="line">    git checkout --orphan coding-pages</span><br><span class="line">    git checkout coding-pages</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#quick-delpoy </span></span><br><span class="line"><span class="keyword">if</span> [[ <span class="variable">$quick</span> = <span class="string">'y'</span> ]]</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">    git checkout master</span><br><span class="line">    git pull coding master</span><br><span class="line">    gitbook build</span><br><span class="line"></span><br><span class="line">    git checkout coding-pages</span><br><span class="line"><span class="keyword">elif</span> [[ <span class="variable">$quick</span> != <span class="string">'n'</span> ]]</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">"Illegal input"</span></span><br><span class="line">    <span class="built_in">exit</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">git rm --cached -r .</span><br><span class="line">git clean -df</span><br><span class="line">rm -rf *~</span><br><span class="line">cp -r _book/* .</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"node_modules</span></span><br><span class="line"><span class="string">deploy.sh</span></span><br><span class="line"><span class="string">_book"</span>&gt;.gitignore</span><br><span class="line">git add .</span><br><span class="line">git commit -m <span class="string">"_book"</span></span><br><span class="line">git push -u coding coding-pages -f</span><br><span class="line"></span><br><span class="line">git checkout master</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [[ <span class="variable">$quick</span> == <span class="string">'n'</span> ]]</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">git push -u coding master -f</span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/gitbook/" rel="tag"># gitbook</a>
+          
+            <a href="/tags/shell/" rel="tag"># shell</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/01/11/使用git与sh脚本在pages上托管与更新gitbook/" rel="next" title="使用git与sh脚本在pages上托管与更新gitbook">
+                <i class="fa fa-chevron-left"></i> 使用git与sh脚本在pages上托管与更新gitbook
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">cakipaul</p>
+              <p class="site-description motion-element" itemprop="description">Articles about CS</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">11</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">4</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">18</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/cakipaul" title="GitHub &rarr; https://github.com/cakipaul" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://dev.tencent.com/u/paulsun" title="Coding &rarr; https://dev.tencent.com/u/paulsun" rel="noopener" target="_blank"><i class="fa fa-fw fa-qq"></i>Coding</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:cakipaul@gmail.com" title="E-Mail &rarr; mailto:cakipaul@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://stackoverflow.com/cakipaul" title="StackOverflow &rarr; https://stackoverflow.com/cakipaul" rel="noopener" target="_blank"><i class="fa fa-fw fa-stack-overflow"></i>StackOverflow</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-思路"><span class="nav-number">1.</span> <span class="nav-text">1 思路</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-概述"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-使用脚本初始化仓库"><span class="nav-number">1.2.</span> <span class="nav-text">1.2 使用脚本初始化仓库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-使用脚本更新新文件"><span class="nav-number">1.3.</span> <span class="nav-text">1.3 使用脚本更新新文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-4-使用脚本更新页面"><span class="nav-number">1.4.</span> <span class="nav-text">1.4 使用脚本更新页面</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-实现"><span class="nav-number">2.</span> <span class="nav-text">2 实现</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-文件组织"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 文件组织</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-流程"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-deploy-sh文件代码"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 deploy.sh文件代码</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">cakipaul</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a></div>
+
+
+
+
+
+  <script src="https://unpkg.com/mermaid@7.1.2/dist/mermaid.min.js"></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize({"startOnload":true});
+    }
+  </script>
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=6.7.0"></script>
+
+  <script src="/js/src/motion.js?v=6.7.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/affix.js?v=6.7.0"></script>
+
+  <script src="/js/src/schemes/pisces.js?v=6.7.0"></script>
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=6.7.0"></script>
+<script src="/js/src/post-details.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=6.7.0"></script>
+
+
+
+  
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+  
+  
+  <script src="/lib/needsharebutton/needsharebutton.js"></script>
+  <script>
+    
+    
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

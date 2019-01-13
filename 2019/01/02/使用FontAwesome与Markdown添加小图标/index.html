@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+  
+  
+  <link rel="stylesheet" href="/lib/needsharebutton/needsharebutton.css">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=6.7.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.7.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.7.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '6.7.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="什么是Font Awesome？Font Awesome 提供的免费图标字体库与CSS框架，可以利用它展示出精美的矢量图标。例如： &amp;lt;i class=&amp;quot;fab fa-qq&amp;quot;&amp;gt;&amp;lt;/i&amp;gt;渲染后会显示为：  如何使用？进入官网获取代码，放在网页html头中。 也可以使用cdn，如BootstrapCDN/fontawesome或staticfile.org">
+<meta name="keywords" content="web,fontawesome,markdown">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用FontAwesome与Markdown添加小图标">
+<meta property="og:url" content="https://blog.cakipaul.com/2019/01/02/使用FontAwesome与Markdown添加小图标/index.html">
+<meta property="og:site_name" content="Work4Truth">
+<meta property="og:description" content="什么是Font Awesome？Font Awesome 提供的免费图标字体库与CSS框架，可以利用它展示出精美的矢量图标。例如： &amp;lt;i class=&amp;quot;fab fa-qq&amp;quot;&amp;gt;&amp;lt;/i&amp;gt;渲染后会显示为：  如何使用？进入官网获取代码，放在网页html头中。 也可以使用cdn，如BootstrapCDN/fontawesome或staticfile.org">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-01-13T07:50:41.641Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用FontAwesome与Markdown添加小图标">
+<meta name="twitter:description" content="什么是Font Awesome？Font Awesome 提供的免费图标字体库与CSS框架，可以利用它展示出精美的矢量图标。例如： &amp;lt;i class=&amp;quot;fab fa-qq&amp;quot;&amp;gt;&amp;lt;/i&amp;gt;渲染后会显示为：  如何使用？进入官网获取代码，放在网页html头中。 也可以使用cdn，如BootstrapCDN/fontawesome或staticfile.org">
+
+
+
+
+
+
+  <link rel="canonical" href="https://blog.cakipaul.com/2019/01/02/使用FontAwesome与Markdown添加小图标/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>使用FontAwesome与Markdown添加小图标 | Work4Truth</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Work4Truth</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">And the truth will set you free.</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>Tags</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>Categories</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://blog.cakipaul.com/2019/01/02/使用FontAwesome与Markdown添加小图标/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="cakipaul">
+      <meta itemprop="description" content="Articles about CS">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Work4Truth">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">使用FontAwesome与Markdown添加小图标<a href="https://github.com/cakipaul/hexoblog/tree/master/source/_posts/使用FontAwesome与Markdown添加小图标.md" class="post-edit-link" title="Edit this post" rel="noopener" target="_blank"><i class="fa fa-pencil"></i></a>
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-01-02 16:58:00" itemprop="dateCreated datePublished" datetime="2019-01-02T16:58:00+08:00">2019-01-02</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-01-13 15:50:41" itemprop="dateModified" datetime="2019-01-13T15:50:41+08:00">2019-01-13</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/web/" itemprop="url" rel="index"><span itemprop="name">web</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/5.6.3/css/font-awesome.css">
+
+<h2 id="什么是Font-Awesome？"><a href="#什么是Font-Awesome？" class="headerlink" title="什么是Font Awesome？"></a>什么是Font Awesome？</h2><p>Font Awesome 提供的免费图标字体库与CSS框架，可以利用它展示出精美的矢量图标。例如：</p>
+<p><code>&lt;i class=&quot;fab fa-qq&quot;&gt;&lt;/i&gt;</code>渲染后会显示为：</p>
+<p><i class="fab fa-qq"></i></p>
+<h2 id="如何使用？"><a href="#如何使用？" class="headerlink" title="如何使用？"></a>如何使用？</h2><p>进入<a href="https://fontawesome.com/start" target="_blank" rel="noopener">官网</a><br>获取代码，放在网页html头中。</p>
+<p>也可以使用cdn，如<a href="https://www.bootstrapcdn.com/fontawesome/" target="_blank" rel="noopener">BootstrapCDN/fontawesome</a>或<a href="https://www.staticfile.org/" target="_blank" rel="noopener">staticfile.org</a>：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">"stylesheet"</span> <span class="attr">href</span>=<span class="string">"https://cdn.staticfile.org/font-awesome/5.6.3/css/font-awesome.css"</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>或者使用js：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;script defer src=<span class="string">"https://use.fontawesome.com/releases/v5.6.3/js/all.js"</span>&gt;<span class="xml"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></span><br></pre></td></tr></table></figure></p>
+<p><em>注：使用cdn时注意版本号，可以在fontawesome官网查看。截至2019.1.2最新版为5.6.3</em></p>
+<p>如果您使用的是支持html语法的mark down编辑器，可以将上面的代码粘贴在任意合适的位置（一般放在文章开头或结尾）即可，编辑器会将其自动解析，不会展示出来。</p>
+<p>下面是一些图标示例：<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">"fas fa-igloo"</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span> <span class="comment">&lt;!-- this icon's 1) style prefix == fas and 2) icon name == igloo --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">"fas fa-igloo"</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span> <span class="comment">&lt;!-- using an &lt;i&gt; element to reference the icon --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">"fas fa-igloo"</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span> <span class="comment">&lt;!-- using a &lt;span&gt; element to reference the icon --&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>经浏览器处理后显示为：<br><i class="fas fa-igloo"></i><br><i class="fas fa-igloo"></i><br><span class="fas fa-igloo"></span> </p>
+<hr>
+<p>更多示例：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Style</th>
+<th style="text-align:center">Availability</th>
+<th style="text-align:center">Style Prefix</th>
+<th style="text-align:center">Example</th>
+<th style="text-align:center">Rendering</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Solid</td>
+<td style="text-align:center">Free</td>
+<td style="text-align:center">fas</td>
+<td style="text-align:center"><code>&lt;i class=&quot;fas fa-igloo&quot;&gt;&lt;/i&gt;</code></td>
+<td style="text-align:center"><i class="fas fa-igloo"></i></td>
+</tr>
+<tr>
+<td style="text-align:center">Regular</td>
+<td style="text-align:center">Pro Required</td>
+<td style="text-align:center">far</td>
+<td style="text-align:center"><code>&lt;i class=&quot;far fa-igloo&quot;&gt;&lt;/i&gt;</code></td>
+<td style="text-align:center"><i class="far fa-igloo"></i></td>
+</tr>
+<tr>
+<td style="text-align:center">Light</td>
+<td style="text-align:center">Pro Required</td>
+<td style="text-align:center">fal</td>
+<td style="text-align:center"><code>&lt;i class=&quot;fal fa-igloo&quot;&gt;&lt;/i&gt;</code></td>
+<td style="text-align:center"><i class="fal fa-igloo"></i></td>
+</tr>
+<tr>
+<td style="text-align:center">Brands</td>
+<td style="text-align:center">Free</td>
+<td style="text-align:center">fab</td>
+<td style="text-align:center"><code>&lt;i class=&quot;fab fa-font-awesome&quot;&gt;&lt;/i&gt;</code></td>
+<td style="text-align:center"><i class="fab fa-font-awesome"></i></td>
+</tr>
+</tbody>
+</table>
+<p><em>注：其中Regular和Light需要Pro账户登陆，要在官网注册账户并购买，否则无法正常显示。</em></p>
+<p>更多logo标签可在<a href="https://fontawesome.com/icons?d=gallery" target="_blank" rel="noopener">IconsGallery</a>与<a href="https://fontawesome.com/cheatsheet#use" target="_blank" rel="noopener">icon列表</a>中查看</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://fontawesome.com/start" target="_blank" rel="noopener">font awesome免费版官方使用说明</a><br><a href="http://www.fontawesome.com.cn/get-started/" target="_blank" rel="noopener">fontawesome中文网</a><br><a href="http://www.runoob.com/font-awesome/fontawesome-tutorial.html" target="_blank" rel="noopener">Runoob.com教程</a></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/web/" rel="tag"># web</a>
+          
+            <a href="/tags/fontawesome/" rel="tag"># fontawesome</a>
+          
+            <a href="/tags/markdown/" rel="tag"># markdown</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/01/02/使用印象笔记Markdown+wordpress更新站点/" rel="next" title="使用印象笔记Markdown+wordpress更新站点">
+                <i class="fa fa-chevron-left"></i> 使用印象笔记Markdown+wordpress更新站点
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/01/07/Git-Node.js-Hexo-Gitbook环境搭建与使用指南/" rel="prev" title="Git-Node.js-Hexo-Gitbook环境搭建与使用指南">
+                Git-Node.js-Hexo-Gitbook环境搭建与使用指南 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">cakipaul</p>
+              <p class="site-description motion-element" itemprop="description">Articles about CS</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">11</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">4</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">18</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/cakipaul" title="GitHub &rarr; https://github.com/cakipaul" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://dev.tencent.com/u/paulsun" title="Coding &rarr; https://dev.tencent.com/u/paulsun" rel="noopener" target="_blank"><i class="fa fa-fw fa-qq"></i>Coding</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:cakipaul@gmail.com" title="E-Mail &rarr; mailto:cakipaul@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://stackoverflow.com/cakipaul" title="StackOverflow &rarr; https://stackoverflow.com/cakipaul" rel="noopener" target="_blank"><i class="fa fa-fw fa-stack-overflow"></i>StackOverflow</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是Font-Awesome？"><span class="nav-number">1.</span> <span class="nav-text">什么是Font Awesome？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何使用？"><span class="nav-number">2.</span> <span class="nav-text">如何使用？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">3.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">cakipaul</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a></div>
+
+
+
+
+
+  <script src="https://unpkg.com/mermaid@7.1.2/dist/mermaid.min.js"></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize({"startOnload":true});
+    }
+  </script>
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=6.7.0"></script>
+
+  <script src="/js/src/motion.js?v=6.7.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/affix.js?v=6.7.0"></script>
+
+  <script src="/js/src/schemes/pisces.js?v=6.7.0"></script>
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=6.7.0"></script>
+<script src="/js/src/post-details.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=6.7.0"></script>
+
+
+
+  
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+  
+  
+  <script src="/lib/needsharebutton/needsharebutton.js"></script>
+  <script>
+    
+    
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

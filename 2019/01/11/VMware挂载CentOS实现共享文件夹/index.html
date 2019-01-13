@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+  
+  
+  <link rel="stylesheet" href="/lib/needsharebutton/needsharebutton.css">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=6.7.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.7.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.7.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '6.7.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="1 安装VMwareTools在 Windows 虚拟机中手动安装 VMware Tools 在 Linux 虚拟机中手动安装 VMware Tools  2 添加共享文件夹开始之前：  首先要将所有使用该虚拟磁盘的虚拟机关机。 确认该虚拟磁盘上的虚拟磁盘 (.vmdk) 文件未被压缩，且不具有只读权限。 在 Windows 主机中，确认卷已格式化为 FAT (12/16/32) 或 NTFS 类">
+<meta name="keywords" content="linux,vmware">
+<meta property="og:type" content="article">
+<meta property="og:title" content="VMware挂载CentOS实现共享文件夹">
+<meta property="og:url" content="https://blog.cakipaul.com/2019/01/11/VMware挂载CentOS实现共享文件夹/index.html">
+<meta property="og:site_name" content="Work4Truth">
+<meta property="og:description" content="1 安装VMwareTools在 Windows 虚拟机中手动安装 VMware Tools 在 Linux 虚拟机中手动安装 VMware Tools  2 添加共享文件夹开始之前：  首先要将所有使用该虚拟磁盘的虚拟机关机。 确认该虚拟磁盘上的虚拟磁盘 (.vmdk) 文件未被压缩，且不具有只读权限。 在 Windows 主机中，确认卷已格式化为 FAT (12/16/32) 或 NTFS 类">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-01-13T07:50:41.640Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="VMware挂载CentOS实现共享文件夹">
+<meta name="twitter:description" content="1 安装VMwareTools在 Windows 虚拟机中手动安装 VMware Tools 在 Linux 虚拟机中手动安装 VMware Tools  2 添加共享文件夹开始之前：  首先要将所有使用该虚拟磁盘的虚拟机关机。 确认该虚拟磁盘上的虚拟磁盘 (.vmdk) 文件未被压缩，且不具有只读权限。 在 Windows 主机中，确认卷已格式化为 FAT (12/16/32) 或 NTFS 类">
+
+
+
+
+
+
+  <link rel="canonical" href="https://blog.cakipaul.com/2019/01/11/VMware挂载CentOS实现共享文件夹/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>VMware挂载CentOS实现共享文件夹 | Work4Truth</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Work4Truth</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">And the truth will set you free.</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>Tags</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>Categories</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://blog.cakipaul.com/2019/01/11/VMware挂载CentOS实现共享文件夹/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="cakipaul">
+      <meta itemprop="description" content="Articles about CS">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Work4Truth">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">VMware挂载CentOS实现共享文件夹<a href="https://github.com/cakipaul/hexoblog/tree/master/source/_posts/VMware挂载CentOS实现共享文件夹.md" class="post-edit-link" title="Edit this post" rel="noopener" target="_blank"><i class="fa fa-pencil"></i></a>
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-01-11 13:00:00" itemprop="dateCreated datePublished" datetime="2019-01-11T13:00:00+08:00">2019-01-11</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-01-13 15:50:41" itemprop="dateModified" datetime="2019-01-13T15:50:41+08:00">2019-01-13</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/操作系统/" itemprop="url" rel="index"><span itemprop="name">操作系统</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="1-安装VMwareTools"><a href="#1-安装VMwareTools" class="headerlink" title="1 安装VMwareTools"></a>1 安装VMwareTools</h1><p><a href="https://docs.vmware.com/cn/VMware-Tools/10.2.0/com.vmware.vsphere.vmwaretools.doc/GUID-391BE4BF-89A9-4DC3-85E7-3D45F5124BC7.html" target="_blank" rel="noopener">在 Windows 虚拟机中手动安装 VMware Tools</a></p>
+<p><a href="https://docs.vmware.com/cn/VMware-Tools/10.2.0/com.vmware.vsphere.vmwaretools.doc/GUID-08BB9465-D40A-4E16-9E15-8C016CC8166F.html" target="_blank" rel="noopener">在 Linux 虚拟机中手动安装 VMware Tools
+</a></p>
+<h1 id="2-添加共享文件夹"><a href="#2-添加共享文件夹" class="headerlink" title="2 添加共享文件夹"></a>2 添加共享文件夹</h1><p>开始之前：</p>
+<ol>
+<li>首先要将所有使用该虚拟磁盘的虚拟机关机。</li>
+<li>确认该虚拟磁盘上的虚拟磁盘 (.vmdk) 文件未被压缩，且不具有只读权限。</li>
+<li>在 Windows 主机中，确认卷已格式化为 FAT (12/16/32) 或 NTFS 类型。只有 FAT (12/16/32) 和 NTFS 格式的卷受支持。如果虚拟磁盘包含混合分区，例如一个分区使用 Linux 操作系统进行格式化，另一个分区使用 Windows 操作系统进行格式化，则您只能映射 Windows 分区。</li>
+<li>确认该虚拟磁盘未加密。您无法映射或装载加密的磁盘。</li>
+</ol>
+<p>选择 Player &gt; 管理 &gt; 虚拟机设置。在选项选项卡中，选择共享文件夹,选择一个文件夹共享选项。</p>
+<h1 id="3-查看共享文件夹"><a href="#3-查看共享文件夹" class="headerlink" title="3 查看共享文件夹"></a>3 查看共享文件夹</h1><p>在 Linux 客户机中，共享文件夹位于 /mnt/hgfs 下。在 Solaris 客户机中，共享文件夹位于 /hgfs 下。</p>
+<h1 id="4-Q-amp-A-共享文件夹目录为空"><a href="#4-Q-amp-A-共享文件夹目录为空" class="headerlink" title="4 Q&amp;A:共享文件夹目录为空"></a>4 Q&amp;A:共享文件夹目录为空</h1><ul>
+<li><p>方法一: 卸载并重装VMwareTools</p>
+</li>
+<li><p>方法二：使用脚本挂载</p>
+<ol>
+<li><p>首先保证你安装了vmware，并且安装了kernel相关:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install kernel kernel-headers kernel-devel -y</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用以下脚本挂载共享文件夹：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line">vmware-hgfsclient | <span class="keyword">while</span> <span class="built_in">read</span> folder; <span class="keyword">do</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">"[i] Mounting <span class="variable">$&#123;folder&#125;</span>   (/mnt/hgfs/<span class="variable">$&#123;folder&#125;</span>)"</span></span><br><span class="line">    mkdir -p <span class="string">"/mnt/hgfs/<span class="variable">$&#123;folder&#125;</span>"</span></span><br><span class="line">    umount -f <span class="string">"/mnt/hgfs/<span class="variable">$&#123;folder&#125;</span>"</span> 2&gt;/dev/null</span><br><span class="line">    vmhgfs-fuse -o allow_other -o auto_unmount <span class="string">".host:/<span class="variable">$&#123;folder&#125;</span>"</span> <span class="string">"/mnt/hgfs/<span class="variable">$&#123;folder&#125;</span>"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br><span class="line">sleep 2s</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+</li>
+<li><p>方法三: 运行指令关联文件夹：</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#将共享文件夹显示在/share/目录中</span></span><br><span class="line">sudo vmhgfs-fuse .host:/ /share</span><br><span class="line"></span><br><span class="line"><span class="comment">#完整命令：</span></span><br><span class="line">sudo vmhgfs-fuse -o allow_other -o auto_unmount -o uid=1000 -o gid=1000 .host:/shared_folder /mnt/shared_folder</span><br><span class="line"><span class="comment">#其中shared_folder为你添加的共享文件夹名字，/mnt/shared_folder为虚拟机中的共享文件夹挂载路径，需要手动创建。</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>方法四：使用脚本实现开机自动挂载：</p>
+<p>  在/etc/fstab文件的最后添加如下内容实现将所有共享文件夹自动挂载到目录/share：</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.host:/  /share  fuse.vmhgfs-fuse allow_other,uid=1000,gid=1000,auto_unmount,defaults 0 0</span><br></pre></td></tr></table></figure>
+<p>  这样开机之后所有你添加的共享文件夹，都会以子文件夹的形式挂载在目录/share中。</p>
+<p>  <em>注意:/share/文件夹需存在</em></p>
+</li>
+</ul>
+<h1 id="5-参考"><a href="#5-参考" class="headerlink" title="5 参考"></a>5 参考</h1><p><a href="https://docs.vmware.com" target="_blank" rel="noopener">VMware官方手册</a></p>
+<p><a href="https://docs.vmware.com/cn/VMware-Workstation-Player/12.0/com.vmware.player.win.using.doc/GUID-D6D9A5FD-7F5F-4C95-AFAB-EDE9335F5562.html" target="_blank" rel="noopener">为虚拟机启用共享文件夹</a></p>
+<p><a href="https://blog.csdn.net/donglynn/article/details/55046017" target="_blank" rel="noopener">vmware 共享文件夹hgfs下为空的解决办法</a></p>
+<p><a href="http://notes.maxwi.com/2017/03/02/vmware-shared-folder/" target="_blank" rel="noopener">VMware配置linux guest中的shared folder</a></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/linux/" rel="tag"># linux</a>
+          
+            <a href="/tags/vmware/" rel="tag"># vmware</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/01/10/wordpress站点目录更换/" rel="next" title="wordpress站点目录更换">
+                <i class="fa fa-chevron-left"></i> wordpress站点目录更换
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/01/11/Nginx服务器实现https连接/" rel="prev" title="Nginx服务器实现https连接">
+                Nginx服务器实现https连接 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">cakipaul</p>
+              <p class="site-description motion-element" itemprop="description">Articles about CS</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">11</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">4</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">18</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/cakipaul" title="GitHub &rarr; https://github.com/cakipaul" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://dev.tencent.com/u/paulsun" title="Coding &rarr; https://dev.tencent.com/u/paulsun" rel="noopener" target="_blank"><i class="fa fa-fw fa-qq"></i>Coding</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:cakipaul@gmail.com" title="E-Mail &rarr; mailto:cakipaul@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://stackoverflow.com/cakipaul" title="StackOverflow &rarr; https://stackoverflow.com/cakipaul" rel="noopener" target="_blank"><i class="fa fa-fw fa-stack-overflow"></i>StackOverflow</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-安装VMwareTools"><span class="nav-number">1.</span> <span class="nav-text">1 安装VMwareTools</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-添加共享文件夹"><span class="nav-number">2.</span> <span class="nav-text">2 添加共享文件夹</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-查看共享文件夹"><span class="nav-number">3.</span> <span class="nav-text">3 查看共享文件夹</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-Q-amp-A-共享文件夹目录为空"><span class="nav-number">4.</span> <span class="nav-text">4 Q&amp;A:共享文件夹目录为空</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-参考"><span class="nav-number">5.</span> <span class="nav-text">5 参考</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">cakipaul</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a></div>
+
+
+
+
+
+  <script src="https://unpkg.com/mermaid@7.1.2/dist/mermaid.min.js"></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize({"startOnload":true});
+    }
+  </script>
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=6.7.0"></script>
+
+  <script src="/js/src/motion.js?v=6.7.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/affix.js?v=6.7.0"></script>
+
+  <script src="/js/src/schemes/pisces.js?v=6.7.0"></script>
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=6.7.0"></script>
+<script src="/js/src/post-details.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=6.7.0"></script>
+
+
+
+  
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+  
+  
+  <script src="/lib/needsharebutton/needsharebutton.js"></script>
+  <script>
+    
+    
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

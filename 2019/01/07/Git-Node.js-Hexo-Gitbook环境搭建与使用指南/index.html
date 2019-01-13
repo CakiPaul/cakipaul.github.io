@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+  
+  
+  <link rel="stylesheet" href="/lib/needsharebutton/needsharebutton.css">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=6.7.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.7.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.7.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '6.7.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="1. 安装Git1.1 什么是GitGit官方文档 1.2 安装Gitwin：安装GitBash CentOS：yum install git 更多git命令可以查看runoob-git 2. 安装NVM2.1 什么是NVMNode Version Managernvm-github 2.2 设置国内镜像123456#设置nvm使用淘宝镜像下载nodeexport NVM_NODEJS_ORG_M">
+<meta name="keywords" content="gitbook,hexo,web,node.js,git">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Git-Node.js-Hexo-Gitbook环境搭建与使用指南">
+<meta property="og:url" content="https://blog.cakipaul.com/2019/01/07/Git-Node.js-Hexo-Gitbook环境搭建与使用指南/index.html">
+<meta property="og:site_name" content="Work4Truth">
+<meta property="og:description" content="1. 安装Git1.1 什么是GitGit官方文档 1.2 安装Gitwin：安装GitBash CentOS：yum install git 更多git命令可以查看runoob-git 2. 安装NVM2.1 什么是NVMNode Version Managernvm-github 2.2 设置国内镜像123456#设置nvm使用淘宝镜像下载nodeexport NVM_NODEJS_ORG_M">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-01-13T07:50:41.640Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Git-Node.js-Hexo-Gitbook环境搭建与使用指南">
+<meta name="twitter:description" content="1. 安装Git1.1 什么是GitGit官方文档 1.2 安装Gitwin：安装GitBash CentOS：yum install git 更多git命令可以查看runoob-git 2. 安装NVM2.1 什么是NVMNode Version Managernvm-github 2.2 设置国内镜像123456#设置nvm使用淘宝镜像下载nodeexport NVM_NODEJS_ORG_M">
+
+
+
+
+
+
+  <link rel="canonical" href="https://blog.cakipaul.com/2019/01/07/Git-Node.js-Hexo-Gitbook环境搭建与使用指南/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Git-Node.js-Hexo-Gitbook环境搭建与使用指南 | Work4Truth</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Work4Truth</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">And the truth will set you free.</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>Tags</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>Categories</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://blog.cakipaul.com/2019/01/07/Git-Node.js-Hexo-Gitbook环境搭建与使用指南/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="cakipaul">
+      <meta itemprop="description" content="Articles about CS">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Work4Truth">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Git-Node.js-Hexo-Gitbook环境搭建与使用指南<a href="https://github.com/cakipaul/hexoblog/tree/master/source/_posts/Git-Node.js-Hexo-Gitbook环境搭建与使用指南.md" class="post-edit-link" title="Edit this post" rel="noopener" target="_blank"><i class="fa fa-pencil"></i></a>
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-01-07 13:03:55" itemprop="dateCreated datePublished" datetime="2019-01-07T13:03:55+08:00">2019-01-07</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-01-13 15:50:41" itemprop="dateModified" datetime="2019-01-13T15:50:41+08:00">2019-01-13</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/前端/" itemprop="url" rel="index"><span itemprop="name">前端</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="1-安装Git"><a href="#1-安装Git" class="headerlink" title="1. 安装Git"></a>1. 安装Git</h1><h2 id="1-1-什么是Git"><a href="#1-1-什么是Git" class="headerlink" title="1.1 什么是Git"></a>1.1 什么是Git</h2><p><a href="https://git-scm.com/doc" target="_blank" rel="noopener">Git官方文档</a></p>
+<h2 id="1-2-安装Git"><a href="#1-2-安装Git" class="headerlink" title="1.2 安装Git"></a>1.2 安装Git</h2><p>win：安装GitBash</p>
+<p>CentOS：<code>yum install git</code></p>
+<p>更多git命令可以查看<a href="http://www.runoob.com/git/" target="_blank" rel="noopener">runoob-git</a></p>
+<h1 id="2-安装NVM"><a href="#2-安装NVM" class="headerlink" title="2. 安装NVM"></a>2. 安装NVM</h1><h2 id="2-1-什么是NVM"><a href="#2-1-什么是NVM" class="headerlink" title="2.1 什么是NVM"></a>2.1 什么是NVM</h2><p>Node Version Manager<br><a href="https://github.com/creationix/nvm#git-install" target="_blank" rel="noopener">nvm-github</a></p>
+<h2 id="2-2-设置国内镜像"><a href="#2-2-设置国内镜像" class="headerlink" title="2.2 设置国内镜像"></a>2.2 设置国内镜像</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#设置nvm使用淘宝镜像下载node</span></span><br><span class="line"><span class="built_in">export</span> NVM_NODEJS_ORG_MIRROR=https://npm.taobao.org/mirrors/node</span><br><span class="line"></span><br><span class="line"><span class="comment">#安装好npm后使用cnpm代替npm</span></span><br><span class="line">npm install cnpm -g --registry=https://registry.npm.taobao.org</span><br><span class="line"><span class="comment">#安装好后就可以使用cnpm代替npm</span></span><br></pre></td></tr></table></figure>
+<h2 id="2-3-安装-管理node-npm"><a href="#2-3-安装-管理node-npm" class="headerlink" title="2.3 安装/管理node|npm"></a>2.3 安装/管理node|npm</h2><p><a href="https://www.kancloud.cn/summer/nodejs-install/71975" target="_blank" rel="noopener">nvm、node、npm的安装与使用</a><br><a href="http://bubkoo.com/2017/01/08/quick-tip-multiple-versions-node-nvm/" target="_blank" rel="noopener">使用NVM管理不同版本node与npm</a></p>
+<h1 id="3-安装Hexo"><a href="#3-安装Hexo" class="headerlink" title="3. 安装Hexo"></a>3. 安装Hexo</h1><h2 id="3-1-相关链接"><a href="#3-1-相关链接" class="headerlink" title="3.1 相关链接"></a>3.1 相关链接</h2><p><a href="https://hexo.io/zh-cn" target="_blank" rel="noopener">Hexo官网</a></p>
+<p><a href="https://github.com/hexojs/hexo" target="_blank" rel="noopener">Hexo-github</a></p>
+<h2 id="3-2-搭建过程"><a href="#3-2-搭建过程" class="headerlink" title="3.2 搭建过程"></a>3.2 搭建过程</h2><p><a href="https://hexo.io/zh-cn/docs/" target="_blank" rel="noopener">Hexo搭建步骤官方文档</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/34400760" target="_blank" rel="noopener">腾讯云搭建Hexo</a></p>
+<p><a href="https://xuanwo.io/2014/08/14/hexo-usual-problem/" target="_blank" rel="noopener">Hexo常见问题解决方案</a></p>
+<h2 id="主题"><a href="#主题" class="headerlink" title="主题"></a>主题</h2><p><a href="https://github.com/iissnan/hexo-theme-next" target="_blank" rel="noopener">next-github</a><br><em>注：主题的安装与配置说明在README文件中</em></p>
+<h1 id="4-安装GitBook"><a href="#4-安装GitBook" class="headerlink" title="4. 安装GitBook"></a>4. 安装GitBook</h1><h2 id="4-1-GitBook使用说明"><a href="#4-1-GitBook使用说明" class="headerlink" title="4.1 GitBook使用说明"></a>4.1 GitBook使用说明</h2><p><a href="https://colobu.com/2014/10/09/gitbook-quickstart/" target="_blank" rel="noopener">GitBook简明教程</a></p>
+<p><a href="https://gitbook.zhangjikai.com/" target="_blank" rel="noopener">GitBook中文手册</a></p>
+<p><a href="https://yangjh.oschina.io/gitbook/faq/Plugins.html" target="_blank" rel="noopener">GitBook插件介绍</a></p>
+<h2 id="4-2-GitBook相关链接"><a href="#4-2-GitBook相关链接" class="headerlink" title="4.2 GitBook相关链接"></a>4.2 GitBook相关链接</h2><p><a href="https://www.gitbook.com" target="_blank" rel="noopener">GitBook官网</a></p>
+<p><a href="https://github.com/GitbookIO/gitbook" target="_blank" rel="noopener">GitBook-github</a></p>
+<p><a href="https://legacy.gitbook.com/editor" target="_blank" rel="noopener">下载GitBook Editor</a></p>
+<p><a href="https://toolchain.gitbook.com" target="_blank" rel="noopener">ToolChain文档</a></p>
+<h1 id="5-使用Git更新文章"><a href="#5-使用Git更新文章" class="headerlink" title="5. 使用Git更新文章"></a>5. 使用Git更新文章</h1><h2 id="5-1-使用Git更新Hexo"><a href="#5-1-使用Git更新Hexo" class="headerlink" title="5.1 使用Git更新Hexo"></a>5.1 使用Git更新Hexo</h2><p>本站将Hexo博客更新到了cakipaul.github.io上。在hexo的source文件夹中添加CNAME文件（无后缀），使用记事本打开并添加<code>blog.cakipaul.com</code>，然后编辑hexo的_congig.yml文件，将url修改为blog.cakipaul.com，然后运行：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo g -d</span><br></pre></td></tr></table></figure></p>
+<p>就可以将静态网页发布到cakipaul.github.io上了，注意还要在cakipaul.com的域名解析中添加CNAME记录，主机名即blog，这样使用blog.cakipaul.com域名就也也可以访问cakipaul.github.io了。</p>
+<p>另外我在github仓库中新建了hexoblog库，在云主机的hexo根目录中输入命令：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#初始化git</span></span><br><span class="line">git init</span><br><span class="line"></span><br><span class="line"><span class="comment">#添加源文件与配置文件</span></span><br><span class="line">git add <span class="built_in">source</span>/</span><br><span class="line">git add _config.yml</span><br><span class="line"></span><br><span class="line"><span class="comment">#添加远程主机,命名为github</span></span><br><span class="line">git remote add github git@github.com:cakipaul/hexoblog.git</span><br><span class="line"></span><br><span class="line"><span class="comment">#添加第一次commit</span></span><br><span class="line">git commit -m <span class="string">"first commit"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#push到github</span></span><br><span class="line">git push -u github master</span><br><span class="line"><span class="comment">#注意这一步需要将云主机的ssl公钥添加到github中，就可以免密ssh连接github了。详情搜索“github添加ssh”</span></span><br></pre></td></tr></table></figure></p>
+<p>在windows系统中安装Github客户端来进行版本控制，并安装VS CODE，就可以用精美的界面编辑markdown文件了~<br>每次文件更新后运行push命令，并在云主机上pull一下，然后再运行<code>hexo g -d</code>，就可以使用云主机向github部署博客了。</p>
+<p>如果是使用android手机，还可以在谷歌市场下载Termux，还有TermuxTutorial手册，就可以在安卓手机上尽情享受终端<del>的快感</del>了。另外还需要有一个带esc,ctrl等功能的键盘，推荐使用Hacker’s KeyBoard，当然最好还是使用OTG接口外插一个键盘~(或者直接使用蓝牙键盘~)</p>
+<p>Termux使用<code>pkg</code>命令对包进行管理（或者apt命令），可以使用<code>pkg openssh</code>安装ssh链接模块，就可以ssh连接云主机了。之后的操作就是一番git commit|push|pull、hexo clean|generate|deploy命令，就可以在github部署自己的网页了。当然使用手机来敲命令还是蛮反人类的，<del>可能未来会考虑做一个Hexo博客同步、编辑与发布的手机客户端</del>！</p>
+<h2 id="5-2-使用Git更新GitBook"><a href="#5-2-使用Git更新GitBook" class="headerlink" title="5.2 使用Git更新GitBook"></a>5.2 使用Git更新GitBook</h2><p>gitbook的运行与hexo一般，是基于node.js与git环境。使用npm命令（或cnmp命令）安装gitbook-cli后，可以用<code>gitbook fetch version</code>来安装以前的版本。更多命令还是参考官网手册：<a href="https://toolchain.gitbook.com" target="_blank" rel="noopener">ToolChain文档</a>。</p>
+<p>另外有一位极其认真的兄台针对gitbook从2.x.x到3.x.x的各种兼容问题制作了非常详细的中文说明手册，从环境部署到插件安装一应俱全：<a href="https://gitbook.zhangjikai.com/" target="_blank" rel="noopener">GitBook中文手册</a>，在此就不再赘述了。</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/gitbook/" rel="tag"># gitbook</a>
+          
+            <a href="/tags/hexo/" rel="tag"># hexo</a>
+          
+            <a href="/tags/web/" rel="tag"># web</a>
+          
+            <a href="/tags/node-js/" rel="tag"># node.js</a>
+          
+            <a href="/tags/git/" rel="tag"># git</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/01/02/使用FontAwesome与Markdown添加小图标/" rel="next" title="使用FontAwesome与Markdown添加小图标">
+                <i class="fa fa-chevron-left"></i> 使用FontAwesome与Markdown添加小图标
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/01/09/Android手机端更新Hexo博客与Gitbook的软件构想/" rel="prev" title="手机端更新Hexo博客与Gitbook的软件构想">
+                手机端更新Hexo博客与Gitbook的软件构想 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">cakipaul</p>
+              <p class="site-description motion-element" itemprop="description">Articles about CS</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">11</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">4</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">18</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/cakipaul" title="GitHub &rarr; https://github.com/cakipaul" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://dev.tencent.com/u/paulsun" title="Coding &rarr; https://dev.tencent.com/u/paulsun" rel="noopener" target="_blank"><i class="fa fa-fw fa-qq"></i>Coding</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:cakipaul@gmail.com" title="E-Mail &rarr; mailto:cakipaul@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://stackoverflow.com/cakipaul" title="StackOverflow &rarr; https://stackoverflow.com/cakipaul" rel="noopener" target="_blank"><i class="fa fa-fw fa-stack-overflow"></i>StackOverflow</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-安装Git"><span class="nav-number">1.</span> <span class="nav-text">1. 安装Git</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-什么是Git"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 什么是Git</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-安装Git"><span class="nav-number">1.2.</span> <span class="nav-text">1.2 安装Git</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-安装NVM"><span class="nav-number">2.</span> <span class="nav-text">2. 安装NVM</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-什么是NVM"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 什么是NVM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-设置国内镜像"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 设置国内镜像</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-安装-管理node-npm"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 安装/管理node|npm</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-安装Hexo"><span class="nav-number">3.</span> <span class="nav-text">3. 安装Hexo</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-相关链接"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 相关链接</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-搭建过程"><span class="nav-number">3.2.</span> <span class="nav-text">3.2 搭建过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#主题"><span class="nav-number">3.3.</span> <span class="nav-text">主题</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-安装GitBook"><span class="nav-number">4.</span> <span class="nav-text">4. 安装GitBook</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1-GitBook使用说明"><span class="nav-number">4.1.</span> <span class="nav-text">4.1 GitBook使用说明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-2-GitBook相关链接"><span class="nav-number">4.2.</span> <span class="nav-text">4.2 GitBook相关链接</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-使用Git更新文章"><span class="nav-number">5.</span> <span class="nav-text">5. 使用Git更新文章</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#5-1-使用Git更新Hexo"><span class="nav-number">5.1.</span> <span class="nav-text">5.1 使用Git更新Hexo</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-2-使用Git更新GitBook"><span class="nav-number">5.2.</span> <span class="nav-text">5.2 使用Git更新GitBook</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">cakipaul</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a></div>
+
+
+
+
+
+  <script src="https://unpkg.com/mermaid@7.1.2/dist/mermaid.min.js"></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize({"startOnload":true});
+    }
+  </script>
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=6.7.0"></script>
+
+  <script src="/js/src/motion.js?v=6.7.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/affix.js?v=6.7.0"></script>
+
+  <script src="/js/src/schemes/pisces.js?v=6.7.0"></script>
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=6.7.0"></script>
+<script src="/js/src/post-details.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=6.7.0"></script>
+
+
+
+  
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+  
+  
+  <script src="/lib/needsharebutton/needsharebutton.js"></script>
+  <script>
+    
+    
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
